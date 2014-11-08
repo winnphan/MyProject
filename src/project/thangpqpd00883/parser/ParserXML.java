@@ -48,7 +48,7 @@ public class ParserXML {
 			}
 		}
 		//================== Lấy file RSS gốc để lấy những đoạn khác =====================
-		public ListEntry parseXMLHotel() {
+		public ListEntry parseXMNCC() {
 			final ListEntry listItemEntry = new ListEntry();
 			_entry = new Entry();
 	
@@ -56,40 +56,42 @@ public class ParserXML {
 
 			Element channel = root.getChild(CHANNEL);
 			Element item = channel.getChild(ITEM);
-			item.getChild(ITEM);
 			item.getChild(TITLE).setEndTextElementListener(
 					new EndTextElementListener() {
 						@Override
 						public void end(String body) {						
-//							Log.i(tag, "item: " + i);						
-//							Log.i(tag, "Name: " + body);
+							Log.i(tag, "item: " + i);						
+							Log.i(tag, "Name: " + body);
 							_entry.setTitle(body);
-//							Log.i(tag, "============//get title");
+							Log.i(tag, "============//get title");
 						}
 					});
+			//=================== Lấy image =========================
+			
+			
 			//=================== Lấy nội dung ======================
-			item.getChild(description).setEndTextElementListener(
-					new EndTextElementListener() {			
-				@Override
-				public void end(String body) {
-					
+//			item.getChild(description).setEndTextElementListener(
+//					new EndTextElementListener() {			
+//				@Override
+//				public void end(String body) {
+//					
 //					Log.i(tag, "item: " + i);				
 //					Log.i(tag, "Decription: " + body);
-					_entry.setDescription(body);
+//					_entry.setDescription(body);
 //					Log.i(tag, "============//get decription");
-				}
-			});
+//				}
+//			});
 			//=================== Lấy ngày của bài báo ======================
 			item.getChild(pubDate).setEndTextElementListener(new EndTextElementListener() {
 				
 				@Override
 				public void end(String body) {
 			
-//					Log.i(tag, "item: " + i);
-//					i++;
-//					Log.i(tag, "pubDate: " + body);
+					Log.i(tag, "item: " + i);
+					i++;
+					Log.i(tag, "pubDate: " + body);
 					_entry.setPubDate(body);
-//					Log.i(tag, "============//get pudDate");
+					Log.i(tag, "============//get pudDate");
 				}
 			});
 			//=================== Lấy link của bài báo ======================
@@ -98,11 +100,11 @@ public class ParserXML {
 				@Override
 				public void end(String body) {
 
-//					Log.i(tag, "item: " + i);
-//					i++;
-//					Log.i(tag, "Link: " + body);
+					Log.i(tag, "item: " + i);
+					i++;
+					Log.i(tag, "Link: " + body);
 					_entry.setLink(body);
-//					Log.i(tag, "============//get Link");
+					Log.i(tag, "============//get Link");
 				}
 			});
 			//================== đóng lại element ===========================
@@ -112,7 +114,7 @@ public class ParserXML {
 				public void end() {
 					// Copy từng item vào object Entry
 					
-//					Log.i(tag, "============Entry Copy================");
+					Log.i(tag, "============Entry Copy================");
 					listItemEntry.setListEntry(_entry.entryCopy());
 					//tạo ra danh sách Entry
 				}
