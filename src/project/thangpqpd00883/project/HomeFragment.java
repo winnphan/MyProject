@@ -58,7 +58,7 @@ import android.widget.ListView;
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				
-				
+				arraylist.get(arg2);
 				Fragment fragment = new WebviewFragment();
 				FragmentManager frgManager = getFragmentManager();
 				frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
