@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.thangpqpd00883.adapter.CustomListView;
+import project.thangpqpd00883.adapter.DetailNotifyFragment;
 import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.parser.ListEntry;
 import project.thangpqpd00883.parser.ParserXML;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ import android.widget.ListView;
  * A simple {@link Fragment} subclass.
  * 
  */
-public class ScienceFragment extends Fragment {
+@SuppressLint("NewApi") public class ScienceFragment extends Fragment {
 
 	public ScienceFragment() {
 		// Required empty public constructor
@@ -52,14 +54,16 @@ public class ScienceFragment extends Fragment {
         listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				
 				
-				Fragment fragment = new WebviewFragment();
+				Fragment fragment = new DetailNotifyFragment();
+				Bundle bun = new  Bundle();
+				bun.putString(DetailNotifyFragment.ARG_URL, arraylist.get(position).getLink());
+				fragment.setArguments(bun);
 				FragmentManager frgManager = getFragmentManager();
-
-				frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+				frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 			}
 		});
 		return view;

@@ -24,6 +24,7 @@ public class ParserXML {
 	final String CHANNEL = "channel";
 	final String ITEM = "item";
 	final String TITLE = "title";
+	final String IMAGE = "image";
 	final String pubDate ="pubDate";	
 	final String description ="description";
 	final String LINK = "link";
@@ -66,21 +67,19 @@ public class ParserXML {
 							Log.i(tag, "============//get title");
 						}
 					});
-			//=================== Lấy image =========================
-			
 			
 			//=================== Lấy nội dung ======================
-//			item.getChild(description).setEndTextElementListener(
-//					new EndTextElementListener() {			
-//				@Override
-//				public void end(String body) {
-//					
-//					Log.i(tag, "item: " + i);				
-//					Log.i(tag, "Decription: " + body);
-//					_entry.setDescription(body);
-//					Log.i(tag, "============//get decription");
-//				}
-//			});
+			item.getChild(IMAGE).setEndTextElementListener(new EndTextElementListener() {			
+					
+				@Override
+					public void end(String body) {
+				
+						Log.i(tag, "item: " + i);				
+						Log.i(tag, "Image: " + body);
+						_entry.setImage(body);
+						Log.i(tag, "============//get Image");
+				}
+		});
 			//=================== Lấy ngày của bài báo ======================
 			item.getChild(pubDate).setEndTextElementListener(new EndTextElementListener() {
 				

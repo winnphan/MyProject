@@ -1,33 +1,42 @@
-package project.thangpqpd00883.main;
+package project.thangpqpd00883.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import project.thangpqpd00883.parser.Entry;
+import project.thangpqpd00883.parser.ListEntry;
 import project.thangpqpd00883.project.R;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DialogFragment;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment
- * must implement the {@link DetailFragment.OnFragmentInteractionListener}
+ * must implement the {@link DetailNotifyFragment.OnFragmentInteractionListener}
  * interface to handle interaction events. Use the
- * {@link DetailFragment#newInstance} factory method to create an instance of
- * this fragment.
+ * {@link DetailNotifyFragment#newInstance} factory method to create an instance
+ * of this fragment.
  * 
  */
-@SuppressLint("NewApi") public class DetailFragment extends DialogFragment {
+@SuppressLint("NewApi") public class DetailNotifyFragment extends Fragment {
+	List<Entry> arraylist = new ArrayList<Entry>();
+	ListEntry listRss;
+	
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
+	public static final String ARG_WEB = "WEB_KEY";
+	public static final String ARG_URL = "WEB_URL";
 
 	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	private String mWeb;
+	private int mID;
+	private String url;
 
 	private OnFragmentInteractionListener mListener;
 
@@ -35,23 +44,23 @@ import android.view.ViewGroup;
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
 	 * 
-	 * @param param1
+	 * @param webkey
 	 *            Parameter 1.
-	 * @param param2
+	 * @param webid
 	 *            Parameter 2.
-	 * @return A new instance of fragment DetailFragment.
+	 * @return A new instance of fragment DetailNotifyFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static DetailFragment newInstance(String param1, String param2) {
-		DetailFragment fragment = new DetailFragment();
+	public static DetailNotifyFragment newInstance(String webkey, String webid) {
+		DetailNotifyFragment fragment = new DetailNotifyFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
+		args.putString(ARG_WEB, webkey);
+		args.putString(ARG_URL, webid);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public DetailFragment() {
+	public DetailNotifyFragment() {
 		// Required empty public constructor
 	}
 
@@ -59,8 +68,8 @@ import android.view.ViewGroup;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
+			mWeb = getArguments().getString(ARG_WEB);
+			mID = getArguments().getInt(ARG_URL);
 		}
 	}
 
@@ -68,32 +77,16 @@ import android.view.ViewGroup;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_detail, container, false);
+		View view = inflater.inflate(R.layout.fragment_detail_notify, container,false);
+		WebView wv = (WebView) view.findViewById(R.id.wvWordItem);
+		url = getArguments().getString(ARG_URL);
+		wv.loadUrl(url);
+		return view;
 	}
+	
 
-	// TODO: Rename method, update argument and hook method into UI event
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
-		}
-	}
+	
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (OnFragmentInteractionListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
 
 	/**
 	 * This interface must be implemented by activities that contain this

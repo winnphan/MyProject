@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.thangpqpd00883.adapter.CustomListView;
+import project.thangpqpd00883.adapter.DetailNotifyFragment;
 import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.parser.ListEntry;
 import project.thangpqpd00883.parser.ParserXML;
@@ -55,13 +56,19 @@ import android.widget.ListView;
         listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				
-				arraylist.get(arg2);
-				Fragment fragment = new WebviewFragment();
+				Fragment fragment = new DetailNotifyFragment();
+				
+				
+				Bundle bun = new  Bundle();
+				bun.putString(DetailNotifyFragment.ARG_URL, arraylist.get(position).getLink());
+				fragment.setArguments(bun);
+				
+				
 				FragmentManager frgManager = getFragmentManager();
-				frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+				frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 				
 			}
 		});

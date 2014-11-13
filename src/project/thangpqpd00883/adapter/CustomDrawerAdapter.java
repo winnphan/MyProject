@@ -1,8 +1,10 @@
-package project.thangpqpd00883.project;
+package project.thangpqpd00883.adapter;
 
 import java.util.List;
 
 import project.thangpqpd00883.obj.DrawerItem;
+import project.thangpqpd00883.project.R;
+import project.thangpqpd00883.project.R.id;
 
 import android.app.Activity;
 import android.content.Context;

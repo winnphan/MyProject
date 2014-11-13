@@ -7,6 +7,8 @@
     <string name="drawer_open">Open drawer</string>
     <string name="drawer_close">Close drawer</string>
     <string name="hello_blank_fragment">Hello ListView</string>
-    <string name="title_activity_webview">WebviewActivity</string>
+    
+    <string name="hint">Search Paper</string>
+    <string name="action_search">Search</string>
 
 </resources>

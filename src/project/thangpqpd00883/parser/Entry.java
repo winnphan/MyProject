@@ -6,6 +6,7 @@ public class Entry {
 	private String link;
 	private String pubDate;
 	private String image;
+
 	
 	public String getTitle() {
 		return title;

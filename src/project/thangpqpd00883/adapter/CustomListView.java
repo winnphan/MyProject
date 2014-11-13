@@ -2,6 +2,7 @@ package project.thangpqpd00883.adapter;
 
 import java.util.List;
 
+import project.thangpqpd00883.image.ImageLoader;
 import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.project.R;
 
@@ -16,9 +17,14 @@ import android.widget.TextView;
 
 public class CustomListView extends BaseAdapter {
 	
-	List<Entry> listEntry;
 	public Activity context;
+	List<Entry> listEntry;
 	public LayoutInflater inflater;
+	
+	// Khai báo load hình ảnh
+	public ImageLoader imageLoader;
+	
+	
 	
 	
 	public CustomListView(Activity context,List<Entry> listEntry){
@@ -26,8 +32,9 @@ public class CustomListView extends BaseAdapter {
 		this.listEntry = listEntry;
 		this.context = context;
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		imageLoader = new ImageLoader(context.getApplicationContext());
 	}
-
 
 	@Override
 	public int getCount() {
@@ -63,9 +70,13 @@ public class CustomListView extends BaseAdapter {
 			view.setTag(holder);
 		}else{
 			holder = (viewHolder) view.getTag();
+			ImageView image = holder.image;
+			
+			
 		}
 		Entry a = (Entry) listEntry.get(position);
 		holder.image.setImageResource(R.drawable.ic_image);
+		imageLoader.DisplayImage(a.getImage(), holder.image);
 		holder.titile.setText(a.getTitle());
 		holder.pubdate.setText(a.getPubDate());
 		

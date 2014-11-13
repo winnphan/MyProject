@@ -3,10 +3,11 @@ package project.thangpqpd00883.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.thangpqpd00883.adapter.CustomDrawerAdapter;
 import project.thangpqpd00883.obj.DrawerItem;
+import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.project.AboutFragment;
 import project.thangpqpd00883.project.CultureFragment;
-import project.thangpqpd00883.project.CustomDrawerAdapter;
 import project.thangpqpd00883.project.EconomicFragment;
 import project.thangpqpd00883.project.EducationFragment;
 import project.thangpqpd00883.project.HomeFragment;
@@ -22,10 +23,18 @@ import project.thangpqpd00883.project.ScienceFragment;
 import project.thangpqpd00883.project.SocialFragment;
 import project.thangpqpd00883.project.TechnologyFragment;
 import project.thangpqpd00883.project.VietnamweekFragment;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -37,7 +46,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 
-public class MainActivity extends Activity {
+@SuppressLint("NewApi") public class MainActivity extends Activity{
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -48,6 +57,7 @@ public class MainActivity extends Activity {
 	CustomDrawerAdapter adapter;
 
 	List<DrawerItem> dataList;
+	List<Entry> array;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +119,9 @@ public class MainActivity extends Activity {
 		if (savedInstanceState == null) {
 			SelectItem(0);
 		}
-
+		//================================================================================
+		
+		
 	}
 
 	@Override
@@ -175,11 +187,10 @@ public class MainActivity extends Activity {
 		default:
 			break;
 		}
-
+		
 		fragment.setArguments(args);
 		FragmentManager frgManager = getFragmentManager();
-		frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-				.commit();
+		frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 		mDrawerList.setItemChecked(possition, true);
 		setTitle(dataList.get(possition).getItemName());
@@ -226,5 +237,28 @@ public class MainActivity extends Activity {
 
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		final FragmentManager fm = getFragmentManager();
+		if(fm.getBackStackEntryCount()==0){
+		// TODO Auto-generated method stub
+				AlertDialog alertbox = new AlertDialog.Builder(this)
+			    .setMessage("Do you want to exit application?")
+			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			    	// do something when the button is clicked
+			        public void onClick(DialogInterface arg0, int arg1) {
+			            finish();
+			        }
+			    })
+			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+			    	// do something when the button is clicked
+			        public void onClick(DialogInterface arg0, int arg1){	
+			        }
+			    }).show();	
+			}else {
+				super.onBackPressed();
+			}
+		}
 }
 
