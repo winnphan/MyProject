@@ -5,7 +5,6 @@ import java.util.List;
 
 import project.thangpqpd00883.adapter.CustomDrawerAdapter;
 import project.thangpqpd00883.obj.DrawerItem;
-import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.project.AboutFragment;
 import project.thangpqpd00883.project.CultureFragment;
 import project.thangpqpd00883.project.EconomicFragment;
@@ -28,7 +27,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +34,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,10 +43,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+@SuppressLint("NewApi")
+public class MainActivity extends Activity {
 
-@SuppressLint("NewApi") public class MainActivity extends Activity{
-	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -57,18 +57,20 @@ import android.widget.ListView;
 	CustomDrawerAdapter adapter;
 
 	List<DrawerItem> dataList;
-	List<Entry> array;
 	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);// Initializing
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);// Initializing
 		dataList = new ArrayList<DrawerItem>();
+
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,GravityCompat.START);
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
+				GravityCompat.START);
 
 		// Add Drawer Item to dataList
 		dataList.add(new DrawerItem("Trang chủ", R.drawable.ic_home));
@@ -80,7 +82,7 @@ import android.widget.ListView;
 		dataList.add(new DrawerItem("Tuần Việt Nam", R.drawable.ic_celendar));
 		dataList.add(new DrawerItem("Đời sống", R.drawable.ic_life));
 		dataList.add(new DrawerItem("Kinh tế", R.drawable.ic_economic));
-		dataList.add(new DrawerItem("Quốc tế",R.drawable.ic_international));
+		dataList.add(new DrawerItem("Quốc tế", R.drawable.ic_international));
 		dataList.add(new DrawerItem("Văn hóa", R.drawable.ic_culture));
 		dataList.add(new DrawerItem("Khoa học", R.drawable.ic_science));
 		dataList.add(new DrawerItem("Công nghệ", R.drawable.ic_technology));
@@ -89,18 +91,20 @@ import android.widget.ListView;
 		dataList.add(new DrawerItem("Cài đặt", R.drawable.ic_settings));
 		dataList.add(new DrawerItem("About", R.drawable.ic_about));
 
-		adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,dataList);
+		adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
+				dataList);
 
 		mDrawerList.setAdapter(adapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,R.string.drawer_close) {
+				R.drawable.ic_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to
@@ -116,12 +120,16 @@ import android.widget.ListView;
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		if (savedInstanceState == null) {
-			SelectItem(0);
+		
+		// ================================= Connection ===============================================
+		if (!isOnline()) {
+			showNoConnectionDialog(this);
+		} else {
+			Toast.makeText(getApplicationContext(), "Internet Conected",Toast.LENGTH_SHORT).show();
+			if (savedInstanceState == null) {
+				SelectItem(0);
+			}
 		}
-		//================================================================================
-		
-		
 	}
 
 	@Override
@@ -182,15 +190,21 @@ import android.widget.ListView;
 			fragment = new PictureFragment();
 			break;
 		case 15:
+			Intent intent = new Intent();
+			startActivity(intent);
+			break;
+		case 16:
 			fragment = new AboutFragment();
 			break;
+
 		default:
 			break;
 		}
-		
+
 		fragment.setArguments(args);
 		FragmentManager frgManager = getFragmentManager();
-		frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		frgManager.beginTransaction().replace(R.id.content_frame, fragment)
+				.commit();
 
 		mDrawerList.setItemChecked(possition, true);
 		setTitle(dataList.get(possition).getItemName());
@@ -229,36 +243,88 @@ import android.widget.ListView;
 		return false;
 	}
 
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 			SelectItem(position);
 
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		final FragmentManager fm = getFragmentManager();
-		if(fm.getBackStackEntryCount()==0){
-		// TODO Auto-generated method stub
-				AlertDialog alertbox = new AlertDialog.Builder(this)
-			    .setMessage("Do you want to exit application?")
-			    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			    	// do something when the button is clicked
-			        public void onClick(DialogInterface arg0, int arg1) {
-			            finish();
-			        }
-			    })
-			    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-			    	// do something when the button is clicked
-			        public void onClick(DialogInterface arg0, int arg1){	
-			        }
-			    }).show();	
-			}else {
-				super.onBackPressed();
-			}
+		if (fm.getBackStackEntryCount() == 0) {
+			// TODO Auto-generated method stub
+			AlertDialog alertbox = new AlertDialog.Builder(this)
+					.setMessage("Do you want to exit application?")
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								// do something when the button is clicked
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									finish();
+								}
+							})
+					.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+								// do something when the button is clicked
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+								}
+							}).show();
+		} else {
+			super.onBackPressed();
 		}
-}
+	}
 
+	
+	// =========================== Connection ==========================================
+	public static void showNoConnectionDialog(Context ctx1) {
+		final Context ctx = ctx1;
+		AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+		builder.setCancelable(true);
+		builder.setMessage("Không có kết nối internet bạn vui lòng kết lại với internet và vào lại ứng dụng");
+		builder.setTitle("No network conection");
+		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				ctx.startActivity(new Intent(Settings.ACTION_SETTINGS));
+			}
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				 
+			}
+		});
+		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			public void onCancel(DialogInterface dialog) {
+				return;
+			}
+		});
+		builder.show();
+	}
+
+	public boolean isOnline() {
+		boolean kq = false;
+		try {
+			ConnectivityManager connect = (ConnectivityManager) this
+					.getSystemService(this.CONNECTIVITY_SERVICE);
+			if (connect != null) {
+				NetworkInfo[] info = connect.getAllNetworkInfo();
+				if (info != null)
+					for (int i = 0; i < info.length; i++)
+						if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+							kq = true;
+						} else {
+							kq = false;
+						}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return kq;
+
+	}
+
+}

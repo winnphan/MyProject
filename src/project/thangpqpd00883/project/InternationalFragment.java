@@ -59,6 +59,7 @@ import android.widget.ListView;
 				
 				
 				Fragment fragment = new DetailNotifyFragment();
+				
 				Bundle bun = new  Bundle();
 				bun.putString(DetailNotifyFragment.ARG_URL, arraylist.get(position).getLink());
 				fragment.setArguments(bun);
