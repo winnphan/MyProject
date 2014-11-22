@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.thangpqpd00883.adapter.CustomDrawerAdapter;
+import project.thangpqpd00883.adapter.CustomListView;
 import project.thangpqpd00883.obj.DrawerItem;
-import project.thangpqpd00883.project.AboutFragment;
+import project.thangpqpd00883.parser.Entry;
+import project.thangpqpd00883.project.AboutActivity;
 import project.thangpqpd00883.project.CultureFragment;
 import project.thangpqpd00883.project.EconomicFragment;
 import project.thangpqpd00883.project.EducationFragment;
@@ -38,15 +40,16 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnQueryTextListener {
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -57,6 +60,10 @@ public class MainActivity extends Activity {
 	CustomDrawerAdapter adapter;
 
 	List<DrawerItem> dataList;
+	
+	List<Entry> list = new ArrayList<Entry>();;
+	CustomListView arrayAdapter;
+	public static String chuoiTimKiemKiem = "";
 	
 
 	@Override
@@ -88,7 +95,7 @@ public class MainActivity extends Activity {
 		dataList.add(new DrawerItem("Công nghệ", R.drawable.ic_technology));
 		dataList.add(new DrawerItem("Bạn đọc", R.drawable.ic_readers));
 		dataList.add(new DrawerItem("Thế giới ảnh", R.drawable.ic_camera));
-		dataList.add(new DrawerItem("Cài đặt", R.drawable.ic_settings));
+//		dataList.add(new DrawerItem("Cài đặt", R.drawable.ic_settings));
 		dataList.add(new DrawerItem("About", R.drawable.ic_about));
 
 		adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_item,
@@ -125,19 +132,18 @@ public class MainActivity extends Activity {
 		if (!isOnline()) {
 			showNoConnectionDialog(this);
 		} else {
-			Toast.makeText(getApplicationContext(), "Internet Conected",Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getApplicationContext(), "Internet Conected",Toast.LENGTH_SHORT).show();
 			if (savedInstanceState == null) {
 				SelectItem(0);
 			}
 		}
+		
+		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	
+	
+	
 
 	public void SelectItem(int possition) {
 
@@ -190,21 +196,20 @@ public class MainActivity extends Activity {
 			fragment = new PictureFragment();
 			break;
 		case 15:
-			Intent intent = new Intent();
+//			Intent intent = new Intent();
+//			startActivity(intent);
+//			break;
+//		case 16:
+			Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
 			startActivity(intent);
-			break;
-		case 16:
-			fragment = new AboutFragment();
-			break;
-
+			return;
 		default:
 			break;
 		}
 
 		fragment.setArguments(args);
 		FragmentManager frgManager = getFragmentManager();
-		frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-				.commit();
+		frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 		mDrawerList.setItemChecked(possition, true);
 		setTitle(dataList.get(possition).getItemName());
@@ -231,18 +236,50 @@ public class MainActivity extends Activity {
 		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		getMenuInflater().inflate(R.menu.main, menu);
+		MenuItem item = menu.findItem(R.id.action_search);
+		
+		// Hai đoạn code bên dưới mở lên thì khi chạy project bị lỗi thầy, thầy có thể fix cho em đoạn này được không ?
+		
+//		SearchView sv = (SearchView)item.getActionView();
+//		sv.setOnQueryTextListener(this);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onQueryTextChange(String arg0) {
+		// TODO Auto-generated method stub
+		arrayAdapter.notifyDataSetChanged();
+		chuoiTimKiemKiem = arg0;
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// The action bar home/up action should open or close the drawer.
 		// ActionBarDrawerToggle will take care of this.
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
+		
 			return true;
 		}
 
 		return false;
 	}
 
+	
+	
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@Override
@@ -262,16 +299,14 @@ public class MainActivity extends Activity {
 					.setPositiveButton("Yes",
 							new DialogInterface.OnClickListener() {
 								// do something when the button is clicked
-								public void onClick(DialogInterface arg0,
-										int arg1) {
+								public void onClick(DialogInterface arg0,int arg1) {
 									finish();
 								}
 							})
 					.setNegativeButton("No",
 							new DialogInterface.OnClickListener() {
 								// do something when the button is clicked
-								public void onClick(DialogInterface arg0,
-										int arg1) {
+								public void onClick(DialogInterface arg0,int arg1) {
 								}
 							}).show();
 		} else {
@@ -326,5 +361,13 @@ public class MainActivity extends Activity {
 		return kq;
 
 	}
+
+
+
+
+
+	
+
+	
 
 }

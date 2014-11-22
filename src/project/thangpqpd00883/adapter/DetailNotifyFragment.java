@@ -82,6 +82,8 @@ import android.widget.Button;
 		url = getArguments().getString(ARG_URL);
 		wv.loadUrl(url);
 		return view;
+		
+		
 	}
 	
 

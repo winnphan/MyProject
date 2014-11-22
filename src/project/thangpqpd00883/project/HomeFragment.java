@@ -5,14 +5,22 @@ import java.util.List;
 
 import project.thangpqpd00883.adapter.CustomListView;
 import project.thangpqpd00883.adapter.DetailNotifyFragment;
+import project.thangpqpd00883.main.MainActivity;
 import project.thangpqpd00883.parser.Entry;
 import project.thangpqpd00883.parser.ListEntry;
 import project.thangpqpd00883.parser.ParserXML;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -70,8 +78,35 @@ import android.widget.ListView;
 				FragmentManager frgManager = getFragmentManager();
 				frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 				
-			}
-		});
+				}
+			});
       return view;
 		}
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.main, menu);
+	    
+//		MenuItem item = menu.findItem(R.id.action_search);
+//	    
+//		SearchView sv = new SearchView(((MainActivity) getActivity()).getActionBar().getThemedContext());
+//	    
+//	    MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+//	    
+//	    MenuItemCompat.setActionView(item, sv);
+//	    
+//	    sv.setOnQueryTextListener(new OnQueryTextListener() {
+//			
+//			public boolean onQueryTextSubmit(String arg0) {
+//				// TODO Auto-generated method stub
+//				System.out.println("search query submit");
+//				return false;
+//			}
+//			
+//			public boolean onQueryTextChange(String arg0) {
+//				// TODO Auto-generated method stub
+//				System.out.println("tap");
+//				return false;
+				}
+//			});
+//		}
 	}

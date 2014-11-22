@@ -2,12 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="project.thangpqpd00883.project.MainActivity" >
-
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
-
+    	android:id="@+id/action_search"
+    	android:icon="@drawable/ic_search"
+    	android:actionViewClass="android.widget.SearchView"
+    	android:showAsAction="always"
+    	android:title="Search"/>
+	<item 
+	    android:id="@+id/action_share"
+	    android:icon="@drawable/ic_share_facebook"
+	    android:title="Share to Facebook"
+	    android:showAsAction="always"/>
 
 </menu>
