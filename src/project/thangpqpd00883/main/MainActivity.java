@@ -329,7 +329,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		});
 		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				 
+				System.exit(0);
 			}
 		});
 		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
